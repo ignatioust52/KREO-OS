@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  /* KREO Brand Tokens */
+  --kreo-ink: #111111; /* Deep charcoal */
+  --kreo-surface: #FDFBF7; /* Warm ivory for main background */
+  --kreo-panel: #FFFFFF; /* Pure white for elevated panels */
+  --kreo-ivory: #F4EFE6; /* Deeper warm ivory for secondary backgrounds */
+  
+  --kreo-signal: #D4FF2A; /* Electric citrus/lime accent */
+  --kreo-amber: #FF9900; /* Warm amber accent */
+  --kreo-plum: #4A154B; /* Subtle plum/violet */
+  
+  --kreo-success: #00A650;
+  --kreo-danger: #E31837;
+
+  --background: var(--kreo-surface);
+  --foreground: var(--kreo-ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-kreo-ink: var(--kreo-ink);
+  --color-kreo-surface: var(--kreo-surface);
+  --color-kreo-panel: var(--kreo-panel);
+  --color-kreo-ivory: var(--kreo-ivory);
+  --color-kreo-signal: var(--kreo-signal);
+  --color-kreo-amber: var(--kreo-amber);
+  --color-kreo-plum: var(--kreo-plum);
+  --color-kreo-success: var(--kreo-success);
+  --color-kreo-danger: var(--kreo-danger);
+  
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Mode Inversions */
+    --kreo-surface: #111111;
+    --kreo-panel: #1A1A1A;
+    --kreo-ink: #FDFBF7;
+    --kreo-ivory: #222222;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
