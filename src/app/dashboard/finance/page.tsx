@@ -3,12 +3,15 @@ import { getExpenses } from '@/actions/finance';
 import RecordExpenseButton from './RecordExpenseButton';
 import { prisma } from '@/lib/prisma';
 import { requireBusinessId } from '@/lib/auth-utils';
+import CreateInvoiceButton from '../invoices/CreateInvoiceButton';
 
 export default async function FinancePage() {
   const businessId = await requireBusinessId();
   const { expenses = [] } = await getExpenses();
 
   const invoices = await prisma.invoice.findMany({ where: { businessId } });
+  const clients = await prisma.client.findMany({ where: { businessId } });
+  const projects = await prisma.project.findMany({ where: { businessId } });
   
   const totalExpenses = expenses.reduce((sum: number, exp: any) => sum + Number(exp.amount), 0);
   
@@ -29,9 +32,7 @@ export default async function FinancePage() {
         </div>
         <div className="flex gap-3">
           {businessId && <RecordExpenseButton businessId={businessId} />}
-          <button className="bg-kreo-ink text-kreo-surface px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-black transition-colors shadow-sm">
-            New Invoice
-          </button>
+          <CreateInvoiceButton clients={clients} projects={projects} />
         </div>
       </header>
 

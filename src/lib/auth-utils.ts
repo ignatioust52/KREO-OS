@@ -8,15 +8,40 @@ export async function requireBusinessId() {
     redirect('/login');
   }
 
-  // Find the first business this user belongs to
-  const membership = await prisma.businessMember.findFirst({
+  // Verify the user actually exists in the database (safeguard against stale JWTs after DB resets)
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id }
+  });
+
+  if (!user) {
+    redirect('/api/auth/signout');
+  }
+
+  let membership = await prisma.businessMember.findFirst({
     where: { userId: session.user.id },
     include: { business: true },
   });
 
   if (!membership) {
-    // Ideally redirect to an onboarding flow, but for now we throw error
-    throw new Error('User does not belong to any business');
+    // Auto-provision a business for new users instead of throwing an error
+    const userName = session.user.name || session.user.email?.split('@')[0] || 'My';
+    const businessName = `${userName}'s Business`;
+    const slug = `${businessName.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${Math.floor(Math.random() * 10000)}`;
+    
+    const business = await prisma.business.create({
+      data: {
+        name: businessName,
+        slug: slug,
+        members: {
+          create: {
+            userId: session.user.id,
+            role: 'OWNER',
+          }
+        }
+      }
+    });
+
+    return business.id;
   }
 
   return membership.businessId;

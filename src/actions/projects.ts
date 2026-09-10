@@ -42,7 +42,7 @@ export async function createProject(data: { name: string; clientId: string; valu
     });
     
     revalidatePath('/dashboard/projects');
-    return { success: true, project };
+    return { success: true, projectId: project.id };
   } catch (error) {
     console.error('Failed to create project:', error);
     return { success: false, error: 'Failed to create project' };

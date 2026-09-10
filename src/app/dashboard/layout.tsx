@@ -2,6 +2,8 @@ import Link from 'next/link';
 import BusinessSwitcher from '@/components/BusinessSwitcher';
 import { logout } from '@/actions/auth';
 
+export const dynamic = 'force-dynamic';
+
 export default function DashboardLayout({
   children,
 }: {

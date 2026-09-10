@@ -1,4 +1,9 @@
-export default function AnalyticsPage() {
+import { getAnalytics } from '@/actions/analytics';
+
+export default async function AnalyticsPage() {
+  const result = await getAnalytics();
+  const data = result.data || { winRate: 0, avgProjectValue: 0, clientRetention: 0, onTimeDelivery: 0 };
+
   return (
     <div className="p-8 max-w-6xl mx-auto">
       <header className="flex items-center justify-between mb-8">
@@ -17,23 +22,23 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-kreo-panel rounded-2xl p-5 shadow-sm border border-kreo-ink/10">
           <h3 className="text-sm font-semibold text-kreo-ink/50 uppercase tracking-wider mb-1">Win Rate</h3>
-          <p className="text-3xl font-bold">68%</p>
-          <p className="text-xs text-kreo-success mt-1">↑ 4% from last month</p>
+          <p className="text-3xl font-bold">{data.winRate}%</p>
+          <p className="text-xs text-kreo-success mt-1">Based on accepted quotes</p>
         </div>
         <div className="bg-kreo-panel rounded-2xl p-5 shadow-sm border border-kreo-ink/10">
           <h3 className="text-sm font-semibold text-kreo-ink/50 uppercase tracking-wider mb-1">Avg Project Value</h3>
-          <p className="text-3xl font-bold">2.4M</p>
-          <p className="text-xs text-kreo-success mt-1">↑ 12% from last month</p>
+          <p className="text-3xl font-bold">UGX {data.avgProjectValue.toLocaleString()}</p>
+          <p className="text-xs text-kreo-success mt-1">Across all projects</p>
         </div>
         <div className="bg-kreo-panel rounded-2xl p-5 shadow-sm border border-kreo-ink/10">
           <h3 className="text-sm font-semibold text-kreo-ink/50 uppercase tracking-wider mb-1">Client Retention</h3>
-          <p className="text-3xl font-bold">42%</p>
-          <p className="text-xs text-kreo-danger mt-1">↓ 2% from last month</p>
+          <p className="text-3xl font-bold">{data.clientRetention}%</p>
+          <p className="text-xs text-kreo-ink/50 mt-1">Clients with multiple projects</p>
         </div>
         <div className="bg-kreo-panel rounded-2xl p-5 shadow-sm border border-kreo-ink/10">
           <h3 className="text-sm font-semibold text-kreo-ink/50 uppercase tracking-wider mb-1">On-Time Delivery</h3>
-          <p className="text-3xl font-bold">92%</p>
-          <p className="text-xs text-kreo-success mt-1">↑ 1% from last month</p>
+          <p className="text-3xl font-bold">{data.onTimeDelivery}%</p>
+          <p className="text-xs text-kreo-success mt-1">Tasks completed by due date</p>
         </div>
       </div>
 

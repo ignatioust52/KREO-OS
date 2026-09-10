@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import CreateProjectModal from '@/components/CreateProjectModal';
 
-export default function AddProjectButton({ businessId, initialOpen = false }: { businessId: string, initialOpen?: boolean }) {
+export default function AddProjectButton({ businessId, initialOpen = false, clients }: { businessId: string, initialOpen?: boolean, clients: any[] }) {
   const [isModalOpen, setIsModalOpen] = useState(initialOpen);
 
   return (
@@ -19,6 +19,7 @@ export default function AddProjectButton({ businessId, initialOpen = false }: { 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         businessId={businessId} 
+        clients={clients}
       />
     </>
   );

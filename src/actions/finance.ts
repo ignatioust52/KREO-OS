@@ -97,7 +97,7 @@ export async function createInvoice(data: { clientId: string; projectId: string;
     });
     
     revalidatePath('/dashboard/invoices');
-    return { success: true, invoice };
+    return { success: true, invoiceId: invoice.id };
   } catch (error) {
     console.error('Failed to create invoice:', error);
     return { success: false, error: 'Failed to create invoice' };
@@ -121,7 +121,7 @@ export async function createExpense(data: { category: string; amount: number; ve
     });
     
     revalidatePath('/dashboard/finance');
-    return { success: true, expense };
+    return { success: true, expenseId: expense.id };
   } catch (error) {
     console.error('Failed to create expense:', error);
     return { success: false, error: 'Failed to create expense' };
@@ -144,7 +144,7 @@ export async function createQuote(data: { clientId: string; projectId?: string; 
     });
     
     revalidatePath('/dashboard/quotes');
-    return { success: true, quote };
+    return { success: true, quoteId: quote.id };
   } catch (error) {
     console.error('Failed to create quote:', error);
     return { success: false, error: 'Failed to create quote' };
@@ -177,7 +177,7 @@ export async function convertQuoteToInvoice(quoteId: string) {
     
     revalidatePath('/dashboard/quotes');
     revalidatePath('/dashboard/invoices');
-    return { success: true, invoice };
+    return { success: true, invoiceId: invoice.id };
   } catch (error) {
     console.error('Failed to convert quote:', error);
     return { success: false, error: 'Failed to convert quote' };

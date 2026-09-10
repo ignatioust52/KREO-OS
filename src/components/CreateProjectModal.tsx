@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { createProject } from '@/actions/projects';
 
-export default function CreateProjectModal({ isOpen, onClose, businessId }: { isOpen: boolean, onClose: () => void, businessId: string }) {
+export default function CreateProjectModal({ isOpen, onClose, businessId, clients }: { isOpen: boolean, onClose: () => void, businessId: string, clients: any[] }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,6 +15,12 @@ export default function CreateProjectModal({ isOpen, onClose, businessId }: { is
     
     const name = formData.get('name') as string;
     const clientId = formData.get('clientId') as string;
+    
+    if (!clientId) {
+      setError('Please select a client');
+      setIsSubmitting(false);
+      return;
+    }
     
     const result = await createProject({ name, clientId });
     
@@ -46,8 +52,13 @@ export default function CreateProjectModal({ isOpen, onClose, businessId }: { is
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Client ID (Temp) *</label>
-              <input required name="clientId" type="text" placeholder="UUID of a client" className="w-full px-4 py-2 border border-kreo-ink/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-kreo-amber" />
+              <label className="block text-sm font-medium mb-1">Client *</label>
+              <select required name="clientId" className="w-full px-4 py-2 border border-kreo-ink/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-kreo-amber bg-kreo-surface">
+                <option value="">Select a client...</option>
+                {clients.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
             </div>
           </div>
           

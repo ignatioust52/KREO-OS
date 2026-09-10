@@ -1,10 +1,14 @@
 import Link from 'next/link';
 import { getInvoices } from '@/actions/finance';
 import { requireBusinessId } from '@/lib/auth-utils';
+import CreateInvoiceButton from './CreateInvoiceButton';
+import { prisma } from '@/lib/prisma';
 
 export default async function InvoicesPage() {
   const businessId = await requireBusinessId();
   const { invoices } = await getInvoices();
+  const clients = await prisma.client.findMany({ where: { businessId } });
+  const projects = await prisma.project.findMany({ where: { businessId } });
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
@@ -13,9 +17,7 @@ export default async function InvoicesPage() {
           <h1 className="text-3xl font-bold tracking-tight">Invoices</h1>
           <p className="text-kreo-ink/60 mt-1">Manage billing, payments, and outstanding balances.</p>
         </div>
-        <button className="bg-kreo-ink text-kreo-surface px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-black transition-colors shadow-sm">
-          Create Invoice
-        </button>
+        <CreateInvoiceButton clients={clients} projects={projects} />
       </header>
 
       {/* Filters & Search */}

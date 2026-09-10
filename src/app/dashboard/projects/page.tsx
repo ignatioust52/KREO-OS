@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getProjects } from '@/actions/projects';
 import AddProjectButton from './AddProjectButton';
 import { requireBusinessId } from '@/lib/auth-utils';
+import { getClients } from '@/actions/clients';
 
 export default async function ProjectsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const params = await searchParams;
@@ -10,6 +11,7 @@ export default async function ProjectsPage({ searchParams }: { searchParams: Pro
 
   const businessId = await requireBusinessId();
   const { projects } = await getProjects(statusFilter);
+  const { clients } = await getClients();
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
@@ -18,7 +20,7 @@ export default async function ProjectsPage({ searchParams }: { searchParams: Pro
           <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
           <p className="text-kreo-ink/60 mt-1">Manage your active and completed creative work.</p>
         </div>
-        <AddProjectButton businessId={businessId} initialOpen={isNew} />
+        <AddProjectButton businessId={businessId} initialOpen={isNew} clients={clients || []} />
       </header>
 
       {/* Tabs */}
@@ -58,7 +60,7 @@ export default async function ProjectsPage({ searchParams }: { searchParams: Pro
               <div className="flex items-center justify-between text-sm mb-4 border-t border-kreo-ink/10 pt-4">
                 <div>
                   <p className="text-kreo-ink/50 mb-0.5 text-xs">Value</p>
-                  <p className="font-semibold">UGX 0</p>
+                  <p className="font-semibold">UGX {Number(project.value || 0).toLocaleString()}</p>
                 </div>
               </div>
             </Link>
